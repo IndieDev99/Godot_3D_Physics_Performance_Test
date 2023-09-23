@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5q7ew7go3gac"]
+
+[ext_resource type="PackedScene" uid="uid://ddxrluwfoggpw" path="res://FPS.tscn" id="2_f1xxh"]
+[ext_resource type="Script" path="res://CubeSpawner.gd" id="2_nfg2d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ag0yl"]
+size = Vector3(46.7314, 0.001, 39.185)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21qmy"]
+albedo_color = Color(0.462745, 0.654902, 1, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ag0yl")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Ground/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(50, 1, 40)
+material = SubResource("StandardMaterial3D_21qmy")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.632678, 16)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.482274, 0.876021, 0, -0.876021, 0.482274, 0, 7.68958, 0)
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.7667, 0)
+script = ExtResource("2_nfg2d")
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.05
+autostart = true
+
+[node name="FrameRate" parent="." instance=ExtResource("2_f1xxh")]
+
+[node name="Label" type="Label" parent="."]
+offset_top = 23.0
+offset_right = 40.0
+offset_bottom = 49.0
+text = "0
+"
+
+[connection signal="timeout" from="Timer" to="MultiMeshInstance3D" method="_on_timer_timeout"]
